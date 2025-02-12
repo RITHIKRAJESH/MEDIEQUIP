@@ -1,0 +1,7 @@
+.sidebar {
+    background-color: #e6f7ff; /* Light blue background */
+  }
+  
+  .sidebar.collapsed {
+    background-color: #e6f7ff; /* Light blue background */
+  }
