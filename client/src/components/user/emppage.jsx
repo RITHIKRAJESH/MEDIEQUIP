@@ -82,7 +82,9 @@ export default function Emppage() {
                 
                     
                     <Col lg={10} style={{marginLeft:"130px"}}>
+                 
                         <Row>
+                      
                             <Routes>
                                 <Route path="/" element={<ProductviewCard />} />
                                 <Route path="/profile" element={<Profile />} />

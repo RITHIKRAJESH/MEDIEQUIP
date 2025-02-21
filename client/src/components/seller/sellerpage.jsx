@@ -57,7 +57,9 @@ export default function Sellerpage() {
 
           {/* Main Content */}
           <Col lg={10} className="content">
+     
             <Routes>
+              <Route path="/" element={<Myorder/>}/>
               <Route path="productview1" element={<Productview1 />} />
               <Route path="productedit/:id" element={<Productedit />} />
               <Route path="usersearch1" element={<Usersearch1 />} />
