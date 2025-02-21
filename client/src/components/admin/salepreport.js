@@ -1,112 +1,127 @@
-import React from 'react';
-import { Container, Table, Button, Row, Col } from 'react-bootstrap';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { Container, Table, Row, Col, Button } from 'react-bootstrap';
 import { message } from 'antd';
 import AXIOS from 'axios';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+
 export default function SaleReport() {
-    const userid = sessionStorage.getItem("userid");
-    const [record, setRecord] = useState([]);
-    const [prod, setProd] = useState([]);
-    const [user, setUser] = useState([]);
+    const [orders, setOrders] = useState([]);
+    const [products, setProducts] = useState([]);
+    const [users, setUsers] = useState([]);
 
+    // Fetch all orders
     useEffect(() => {
-        AXIOS.get(`http://localhost:9000/getAllOrder/`)
-            .then((res) => {
-                setRecord(res.data);
-            })
-            .catch((err) => message.error(err));
-    }, []);
-
-    useEffect(() => {
-        // const orderid = sessionStorage.getItem('orderid');
-        const url = `http://localhost:9000/paymentpage/`;
-        AXIOS.get(url)
-            .then((res) => {
-                setProd(res.data.prod);
-                setUser(res.data.user);
+        AXIOS.get("http://localhost:9000/getAllOrder")
+            .then((res) => setOrders(res.data))
+            .catch((err) => {
+                message.error("Failed to fetch orders.");
+                console.error(err);
             });
     }, []);
-    const chartData = prod.map((ord, index) => ({
-        name: ord.address, // Assuming address is the x-axis label
-        quantity: ord.prodquantity, // Assuming quantity is the y-axis value
-    }));
-    const generateCSV = () => {
-        const csvContent = "data:text/csv;charset=utf-8,"
-            + "User Name, Product Name, Product Price, Address, Quantity\n";
 
-        const dataRows = prod.map((ord) => {
-            return `${ord.userid.fullname},${user.productname},${user.productprice},${ord.address},${ord.prodquantity}`;
+    // Fetch products and users for payment details
+    useEffect(() => {
+        AXIOS.get("http://localhost:9000/paymentpage")
+            .then((res) => {
+                setProducts(res.data.prod || []);
+                setUsers(res.data.user || []);
+            })
+            .catch((err) => {
+                message.error("Failed to fetch payment details.");
+                console.error(err);
+            });
+    }, []);
+
+    // Prepare data for the chart
+    const chartData = products.map((order) => ({
+        name: order.pid?.productname || "Unknown Product",
+        quantity: order.prodquantity || 0,
+    }));
+
+    // Function to generate and download CSV
+    const generateCSV = () => {
+        const csvContent =
+            "data:text/csv;charset=utf-8," +
+            "User Name,Product Name,Product Price,Address,Quantity,Total Amount\n";
+
+        const dataRows = orders.map((order) => {
+            return `${order.userid?.fullname || "N/A"},${order.pid?.productname || "N/A"},${order.pid?.productprice || 0},${order.address || "N/A"},${order.prodquantity || 0},${(order.prodquantity || 0) * (order.pid?.productprice || 0)}`;
         });
 
-        const csvRows = [...dataRows];
-        const csvData = csvContent + csvRows.join("\n");
-
+        const csvData = csvContent + dataRows.join("\n");
         const encodedUri = encodeURI(csvData);
         const link = document.createElement("a");
         link.setAttribute("href", encodedUri);
-        link.setAttribute("download", "payment_data.csv");
+        link.setAttribute("download", "sale_report.csv");
         document.body.appendChild(link);
         link.click();
     };
 
     return (
-        <>
-            <Container>
-         <Row>
-            <Col>
-            <h1 className='text-center'>Sale Report</h1>
-            </Col>
-            <Col>
-            <ResponsiveContainer width="100%" height={400}>
-                <LineChart data={chartData}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="name" />
-                    <YAxis />
-                    <Tooltip />
-                    <Legend />
-                    <Line type="monotone" dataKey="quantity" stroke="#8884d8" />
-                </LineChart>
-            </ResponsiveContainer>
-            
-            </Col>
-         </Row>
-                <Table striped bordered hover>
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Price</th>
-                            <th>Category</th>
-                            <th>Product Used</th>
-                            <th>Address</th>
-                            <th>Quantity</th>
-                            <th>Amount</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {user.map((ls, index) => {
-                            return (
-                                <tr key={index}>
-                                    <td>{ls.productname}</td>
-                                    <td>&#8377;{ls.productprice}</td>
-                                    <td>{ls.category}</td>
-                                    <td>{ls.prod_used}</td>
-                                    {prod.map((ord, index) => {
-                                        return (
-                                            <React.Fragment key={index}>
-                                                <td>{ord.address}</td>
-                                                <td>{ord.prodquantity}</td>
-                                                <td>&#8377;{ord.prodquantity * ls.productprice}</td>
-                                            </React.Fragment>
-                                        );
-                                    })}
+        <Container>
+            <Row className="mb-4">
+                <Col className="text-center">
+                    <h2>Sales Report</h2>
+                </Col>
+            </Row>
+
+            <Row className="mb-4">
+                <Col>
+                    <ResponsiveContainer width="100%" height={400}>
+                        <LineChart data={chartData}>
+                            <CartesianGrid strokeDasharray="3 3" />
+                            <XAxis dataKey="name" />
+                            <YAxis />
+                            <Tooltip />
+                            <Legend />
+                            <Line type="monotone" dataKey="quantity" stroke="#8884d8" />
+                        </LineChart>
+                    </ResponsiveContainer>
+                </Col>
+            </Row>
+
+            <Row>
+                <Col>
+                    <Button onClick={generateCSV} className="mb-3" variant="primary">
+                        Download CSV
+                    </Button>
+
+                    <Table striped bordered hover>
+                        <thead className="bg-primary text-white">
+                            <tr>
+                                <th>User Name</th>
+                                <th>Product Name</th>
+                                <th>Price</th>
+                                <th>Category</th>
+                                <th>Address</th>
+                                <th>Quantity</th>
+                                <th>Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {orders.length > 0 ? (
+                                orders.map((order, index) => (
+                                    <tr key={index}>
+                                        <td>{order.userid?.fullname || "N/A"}</td>
+                                        <td>{order.pid?.productname || "N/A"}</td>
+                                        <td>₹{order.pid?.productprice || 0}</td>
+                                        <td>{order.pid?.category || "N/A"}</td>
+                                        <td>{order.address || "N/A"}</td>
+                                        <td>{order.prodquantity || 0}</td>
+                                        <td>₹{(order.prodquantity || 0) * (order.pid?.productprice || 0)}</td>
+                                    </tr>
+                                ))
+                            ) : (
+                                <tr>
+                                    <td colSpan="7" className="text-center text-muted">
+                                        No sales data available.
+                                    </td>
                                 </tr>
-                            );
-                        })}
-                    </tbody>
-                </Table>
-            
-            </Container>
-        </>
+                            )}
+                        </tbody>
+                    </Table>
+                </Col>
+            </Row>
+        </Container>
     );
 }

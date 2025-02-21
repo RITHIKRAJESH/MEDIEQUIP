@@ -3,7 +3,7 @@ import { Container, Row,Col } from "react-bootstrap";
 export default function Footer(){
     return(
         <>
-          <Container fluid className="footer" style={{height:'400px', fontFamily:'monospace'}} >       
+          <Container fluid className="footer" style={{height:'200px', fontFamily:'sans-serif',textAlign:'center'}} >       
                <Row>
                 <Col>
                 <p>&copy; 2001 Medical Equipment Company. All rights reserved. | 

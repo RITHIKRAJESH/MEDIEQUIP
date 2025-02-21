@@ -1,51 +1,41 @@
-import {useEffect,useState} from 'react';
+import { useEffect, useState } from 'react';
 import AXIOS from 'axios';
-import { Container, Row, Table ,Col} from 'react-bootstrap';
-export default function Profile(){
-    const idn=sessionStorage.getItem('userid')
-    const [record,setRecord]=useState([])
-    useEffect(()=>{
-        const url=`http://localhost:9000/fetchByid/${idn}`;
-        AXIOS.get(url).then((res)=>{
-                setRecord(res.data)
-        })
-    })
+import { Container, Row, Col, Card, Button } from 'react-bootstrap';
+import './profile.css'
 
-    return(
-        <>
-        <Container>
-           
-               {
-  record.map((ls)=>{
+export default function Profile() {
+    const idn = sessionStorage.getItem('userid');
+    const [record, setRecord] = useState([]);
 
-    return(
+    useEffect(() => {
+        const url = `http://localhost:9000/fetchByid/${idn}`;
+        AXIOS.get(url).then((res) => {
+            setRecord(res.data);
+        });
+    }, [idn]);
 
-        <Row className='rounded shadow p-4 border mt-3'>
-   <Col lg={2}>
-           {/* <img src={''} className='square bg-info' style={{width:'100%'
-        ,height:'200px'   
-        }}/> */}
-        </Col>
-        <Col lg={10}>
-            <h3>Full Name:{ls.fullname}</h3>
-            <h3>Email:<a href="">{ls.email}</a></h3>
-            <h3>Phone Number:
-                {ls.phone}
-            </h3>
-            <h3>Address:{ls.address}</h3>
-        </Col>
-        </Row>
-     
-       
-    )
-
-  })
-
-               }
-                
-           
+    return (
+        <Container className="mt-5">
+            {record.map((ls) => (
+                <Row className="justify-content-center" key={ls._id}>
+                    <Col md={8}>
+                        <Card className="shadow-sm p-4 mb-4 rounded">
+                            {/* Profile Picture (Optional) */}
+                            {/* <Card.Img variant="top" src="profile-image-url.jpg" className="rounded-circle" style={{ width: '150px', height: '150px', margin: '0 auto', objectFit: 'cover' }} /> */}
+                            <Card.Body>
+                                <h2 className="text-center text-info mb-4">Profile Details</h2>
+                                <h4 className="mb-3"><strong>Full Name:</strong> {ls.fullname}</h4>
+                                <h5 className="mb-3"><strong>Email:</strong> <a href={`mailto:${ls.email}`}>{ls.email}</a></h5>
+                                <h5 className="mb-3"><strong>Phone:</strong> {ls.phone}</h5>
+                                <h5 className="mb-3"><strong>Address:</strong> {ls.address}</h5>
+                                <div className="d-flex justify-content-center mt-4">
+                                    <Button variant="primary" size="lg">Edit Profile</Button>
+                                </div>
+                            </Card.Body>
+                        </Card>
+                    </Col>
+                </Row>
+            ))}
         </Container>
-        
-        </>
-    )
+    );
 }

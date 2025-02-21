@@ -46,7 +46,7 @@ export default function ProductviewCard() {
                             Equipment
                         </Dropdown.Toggle>
                         <Dropdown.Menu>
-                            <Dropdown.Item eventKey="Wheel Chair">Wheel Chair</Dropdown.Item>
+                            <Dropdown.Item eventKey="WheelChair">WheelChair</Dropdown.Item>
                             <Dropdown.Item eventKey="Bed">Bed</Dropdown.Item>
                             <Dropdown.Item eventKey="Walker">Walker</Dropdown.Item>
                             <Dropdown.Item eventKey="Orthopedic Belt">Orthopedic Belt</Dropdown.Item>
@@ -73,41 +73,50 @@ export default function ProductviewCard() {
                     </Col>
                 </Row>
                 <Row className="mt-3">
-                    {product
-                    .filter((ls)=>{ return(
-                        ls.productname.toLocaleLowerCase().match(uname.toLowerCase())|| ls.category.toLowerCase().match(uname.toLocaleLowerCase())||uname=="")})
-                        // .filter((ls) => ls.productname.toLowerCase().match(uname.toLowerCase()))
-                        .filter((ls) => selectedCategory ? ls.productname.toLowerCase() === selectedCategory.toLocaleLowerCase() : true)
-                       
-                        .map((ls, index) => (
-                            <Col key={ls._id} lg={4} className="mb-3">
-                                <Card style={{ width: '100%' }}>
-                                   <Card.Img
-                                   variant='top'
-                                   src={`http://localhost:9000/${ls.image}`}
-                                   style={{ height:"340px"}}
-                                   />
-                                   <Card.Body>
-                                    <Card.Title>
-                                      Product Name:  {ls.productname}
-                                    </Card.Title>
-                                    <Card.Text>
-                                        <p>Quantitly: {ls.productquantity>=1?ls.productquantity:<img src={blk} style={{width:'80px',height:'80px'}}/>}</p>
-                                    </Card.Text>
-                                    <Card.Text>
-                                        <p>Price: {ls.productprice}</p>
-                                    </Card.Text>
-                                    <Card.Text>
-                                        <p>Category: {ls.category}</p>
-                                    </Card.Text>
-                                  {ls.productquantity>=1?  <a href={`/emppage/viewproductdetail/${ls._id}`} className='btn btn-danger'>
-                                        View Details
-                                    </a>:"Stock Close"}
-                                   </Card.Body>
-                                   </Card>
-                                   </Col>
-                        ))}
-                        </Row>
+    {product
+        .filter((ls) => {
+            // First filter: Match the search term (uname) with product name or category
+            const matchesSearchTerm = ls.productname.toLowerCase().includes(uname.toLowerCase()) || 
+                                      ls.category.toLowerCase().includes(uname.toLowerCase());
+
+            // Second filter: Match the selected category (if any)
+            const matchesCategory = selectedCategory ? ls.category.toLowerCase() === selectedCategory.toLowerCase() : true;
+
+            // Return products that match both filters
+            return matchesSearchTerm && matchesCategory;
+        })
+        .map((ls) => (
+            <Col key={ls._id} lg={4} className="mb-3">
+                <Card style={{ width: '100%' }}>
+                    <Card.Img
+                        variant='top'
+                        src={`http://localhost:9000/${ls.image}`}
+                        style={{ height: "340px" }}
+                    />
+                    <Card.Body>
+                        <Card.Title>
+                            Product Name: {ls.productname}
+                        </Card.Title>
+                        <Card.Text>
+                            <p>Quantity: {ls.productquantity >= 1 ? ls.productquantity : <img src={blk} style={{ width: '80px', height: '80px' }} />}</p>
+                        </Card.Text>
+                        <Card.Text>
+                            <p>Price: {ls.productprice}</p>
+                        </Card.Text>
+                        <Card.Text>
+                            <p>Category: {ls.category}</p>
+                        </Card.Text>
+                        {ls.productquantity >= 1 ? (
+                            <a href={`/emppage/viewproductdetail/${ls._id}`} className='btn btn-danger'>
+                                View Details
+                            </a>
+                        ) : "Stock Close"}
+                    </Card.Body>
+                </Card>
+            </Col>
+        ))}
+</Row>
+
                         </Container>
                         </>
     );

@@ -1,64 +1,65 @@
-import logo from './logo.svg';
+import React, { Suspense } from 'react';
 import './App.css';
-import Userregister from './components/user/userregister';
-import  Userlogin from './components/user/userlogin';
 import { Route, Routes } from 'react-router-dom';
-import Webheader from './components/webheader';
-import Addproducte from './components/admin/addproduct';
-import Adminlogin from './components/admin/adminlogin';
-import Employeeview from './components/user/employeeview';
-import Msg from './components/user/welcome';
-import Productview from './components/user/productview';
-import Adminnav from './components/admin/adminnav';
-import Emppage from './components/user/emppage';
-import Sellerregister from './components/seller/sellerregister';
-import Sellerlogin from './components/seller/sellerlogin';
-import Usersearch from './components/admin/usersearch';
 
-import Adminpage from './components/admin/adminpage';
-import Profile from './components/user/profile';
-import Sellerpage from './components/seller/sellerpage';
-import Sellersearch from './components/admin/sellersearch';
-import Productview1 from './components/seller/productview1';
-import Homepage from './components/homepage';
-import Middle3 from './components/middle3';
-import Contact from './components/contact';
-import ProductviewCard from './components/user/product_card';
-import OrderNow from './components/user/order';
-import PaymentPage from './components/user/makepayment';
+// Lazy loading the components
+const Userregister = React.lazy(() => import('./components/user/userregister'));
+const Userlogin = React.lazy(() => import('./components/user/userlogin'));
+const Addproducte = React.lazy(() => import('./components/admin/addproduct'));
+const Adminlogin = React.lazy(() => import('./components/admin/adminlogin'));
+const Employeeview = React.lazy(() => import('./components/user/employeeview'));
+const Msg = React.lazy(() => import('./components/user/welcome'));
+const Productview = React.lazy(() => import('./components/user/productview'));
+const Productview1 = React.lazy(() => import('./components/seller/productview1'));
+const Adminnav = React.lazy(() => import('./components/admin/adminnav'));
+const Emppage = React.lazy(() => import('./components/user/emppage'));
+const Sellerregister = React.lazy(() => import('./components/seller/sellerregister'));
+const Sellerlogin = React.lazy(() => import('./components/seller/sellerlogin'));
+const Usersearch = React.lazy(() => import('./components/admin/usersearch'));
+const Adminpage = React.lazy(() => import('./components/admin/adminpage'));
+const Profile = React.lazy(() => import('./components/user/profile'));
+const Sellerpage = React.lazy(() => import('./components/seller/sellerpage'));
+const Sellersearch = React.lazy(() => import('./components/admin/sellersearch'));
+const Homepage = React.lazy(() => import('./components/homepage'));
+const Middle3 = React.lazy(() => import('./components/middle3'));
+const Contact = React.lazy(() => import('./components/contact'));
+const ProductviewCard = React.lazy(() => import('./components/user/product_card'));
+const OrderNow = React.lazy(() => import('./components/user/order'));
+const PaymentPage = React.lazy(() => import('./components/user/makepayment'));
 
-
+// A simple fallback loading component
+const Loading = () => <div>Loading...</div>;
 
 function App() {
   return (
     <>
-   <Routes>
-    {/* <Route path="/" element={<Webheader/>}/> */}
-    <Route path="/userregister" element={<Userregister/>}/>
-    <Route path="/userlogin" element={<Userlogin/>}/>
-    <Route path="/addproduct" element={< Addproducte/>}/>
-    <Route path="/adminlogin" element={< Adminlogin/>}/>
-    <Route path="/employeeview" element={< Employeeview/>}/>
-    <Route path="/welcome" element={<Msg/>}/>
-    <Route path="/productview" element={<Productview/>}/>
-    <Route path="/productview1" element={<Productview1/>}/>
-    <Route path="/adminnav" element={<Adminnav/>}/>
-    <Route path="/profile" element={<Profile/>}/>
-    <Route path="/emppage/*" element={<Emppage/>}/>
-    <Route path="/sellerpage/*" element={<Sellerpage/>}/>
-    <Route path="/adminpage/*" element={<Adminpage/>}/>
-    <Route path="/sellerregister" element={<Sellerregister/>}/>
-    <Route path="/sellerlogin" element={<Sellerlogin/>}/>
-    <Route path="/usersearch" element={<Usersearch/>}/>
-    <Route path="/sellersearch" element={<Sellersearch/>}/>
-    <Route path="/middle3" element={<Middle3/>}/>
-    <Route path="/contact" element={<Contact/>}/>
-    <Route path='/' element={<Homepage/>}/>
-    <Route path='/productviewcard' element={<ProductviewCard/>}/>
-    <Route path='/order' element={<OrderNow/>}/>
-    <Route path="/paymentpage" element={<PaymentPage/>}></Route>
-   </Routes>
-   
+      <Suspense fallback={<Loading />}>
+        <Routes>
+          <Route path="/userregister" element={<Userregister />} />
+          <Route path="/userlogin" element={<Userlogin />} />
+          <Route path="/addproduct" element={<Addproducte />} />
+          <Route path="/adminlogin" element={<Adminlogin />} />
+          <Route path="/employeeview" element={<Employeeview />} />
+          <Route path="/welcome" element={<Msg />} />
+          <Route path="/productview" element={<Productview />} />
+          <Route path="/productview1" element={<Productview1 />} />
+          <Route path="/adminnav" element={<Adminnav />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/emppage/*" element={<Emppage />} />
+          <Route path="/sellerpage/*" element={<Sellerpage />} />
+          <Route path="/adminpage/*" element={<Adminpage />} />
+          <Route path="/sellerregister" element={<Sellerregister />} />
+          <Route path="/sellerlogin" element={<Sellerlogin />} />
+          <Route path="/usersearch" element={<Usersearch />} />
+          <Route path="/sellersearch" element={<Sellersearch />} />
+          <Route path="/middle3" element={<Middle3 />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/" element={<Homepage />} />
+          <Route path="/productviewcard" element={<ProductviewCard />} />
+          <Route path="/order" element={<OrderNow />} />
+          <Route path="/paymentpage" element={<PaymentPage />} />
+        </Routes>
+      </Suspense>
     </>
   );
 }

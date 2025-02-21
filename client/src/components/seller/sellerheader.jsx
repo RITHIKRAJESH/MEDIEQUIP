@@ -6,7 +6,7 @@ import { FaLaptopMedical } from "react-icons/fa6";
 export default function Sellerheader() {
   return (
     <>
-    <Navbar className="abc" style={{backgroundColor:"white"}}>
+    <Navbar className="abc" style={{backgroundColor:"rgb(7, 79, 150)"}}>
         <Container>
           <Navbar.Brand href="#home">
             {/* <img

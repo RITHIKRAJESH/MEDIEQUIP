@@ -80,11 +80,6 @@ export default function Usersearch(){
                                 <MdDelete onClick={()=>{deleteuser(ls._id)
                                 }}
                                 style={{color:'red', fontSize:'30px'}} />
-
-                                &nbsp;
-                                {/* <a href={`/adminpage/useredit/${ls._id}`}>
-                                <FaUserEdit style={{color:'green', fontSize:'30px'}} />
-                                </a> */}
                                 </td>
                             </tr>
                         )

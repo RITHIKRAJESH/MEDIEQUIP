@@ -3,7 +3,7 @@ import { Container, Row,Col } from "react-bootstrap";
 export default function Middle3(){
     return(
         <>
-        <Container fluid className="middle3" style={{height:'400px', fontFamily:'monospace', marginTop:'20px'}} >
+        <Container fluid className="middle3" style={{height:'400px', fontFamily:'sans-serif', marginTop:'20px'}} >
            
                  <h1><center>About Us</center></h1>
                  <br></br>
