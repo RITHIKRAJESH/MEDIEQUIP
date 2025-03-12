@@ -36,7 +36,6 @@ export default function Productview(){
         <Container>
         <Row className="shadow rounded-4 p-3 mt-3 pb-1 border">
                 <Col>
-                
             <Form.Label>
               <h3 className="text-info">Product list</h3>
             </Form.Label>
@@ -79,7 +78,7 @@ export default function Productview(){
                             {ls.productname}
                         </td>
                         <td>
-                            {qt? ls.productquantity : <img src={blk} style={{width:'80px',height:'80px'}}/>}
+                            {ls.productquantity}
                         </td>
                         <td>
                             {ls.category}

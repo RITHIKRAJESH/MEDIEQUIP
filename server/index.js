@@ -21,6 +21,7 @@ app.post("/addproduct",upload.single('image'),(req,res)=>{
     const{productprice}=req.body;
     const{prod_used}=req.body;
     const{category}=req.body;
+    const{description}=req.body;
     console.log(productname)
     console.log(productprice)
     const image=req.file.filename;
@@ -31,7 +32,8 @@ app.post("/addproduct",upload.single('image'),(req,res)=>{
         productprice,
         prod_used,
         category,
-        image
+        image,
+        description
      })
     res.json("success")
 })
@@ -181,9 +183,18 @@ app.get("/paymentpage",async(req,res)=>{
      
 })
 
+app.get("/cancelorder/:orderid",async(req,res)=>{
+    console.log(req.params.orderid)
+
+    await orderModel.updateOne({_id:req.params.orderid},{status:"Cancelled"})
+    res.json("Order Cancelled.Amount will be deducted in 3 banking days")
+})
+
+
 //login
 app.post("/login",async(req,res)=>{
     const {email,pass}=req.body;
+    console.log(email,pass)
     const result=await userModel.find({"email":email})
     if(result.length>0){
         const pwd=result[0].pass;
@@ -210,6 +221,7 @@ app.post("/login",async(req,res)=>{
 
 app.post("/sellerlogin",async(req,res)=>{
     const {email,pass}=req.body;
+    console.log(email,pass)
     const result=await userModel2.find({"email":email})
     if(result.length>0){
         const pwd=result[0].pass;
@@ -272,16 +284,19 @@ app.get("/fetchAllprd",async(req,res)=>{
     }
    })
 
-   app.post("/updateData/:userid",async(req,res)=>{
-     const {fullname,email}=req.body
+   app.put("/updateData/:idn",async(req,res)=>{
+     const {fullname,email,address,phone}=req.body
     
     console.log(fullname)
     console.log(email)
+    console.log(req.params.idn)
     const  dt={
         fullname:fullname,
         email:email,
+        address:address,
+        phone:phone
     }
-   await userModel.updateOne({'_id':req.params.userid},dt)
+   await userModel.updateOne({'_id':req.params.idn},dt)
 res.json("update successfully")
 
    })
@@ -375,6 +390,10 @@ res.json("update successfully")
     }
    })
    
+//    app.put("/updateProfile/$id",async(req,res)=>{
+//     const idno=req.params.id;
+
+//    })
    
 
 app.listen(9000,()=>{

@@ -26,7 +26,8 @@ const userSchema1=new mongoose.Schema({
     prod_used:String,
     sellerid:String,
     category:String,
-    image:String
+    image:String,
+    description:String
 
    
 },{timestamps:true});

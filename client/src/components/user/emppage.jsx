@@ -74,7 +74,7 @@ export default function Emppage() {
                         <Nav.Link as={Link} to="/emppage/profile" style={{ fontSize: "20px" }}><CgProfile />Profile</Nav.Link>
                         <Nav.Link as={Link} to="/emppage/myorder" style={{ fontSize: "20px" }}><TbSquareRoundedLetterO />My Order</Nav.Link>
                         
-                        <Nav.Link as={Link} to="/userlogin" style={{ fontSize: "20px",marginLeft:"1000px" }}><AiOutlineLogout />Logout</Nav.Link>
+                        <Nav.Link as={Link} to="/" style={{ fontSize: "20px",marginLeft:"1000px" }}><AiOutlineLogout />Logout</Nav.Link>
                     </Nav>
                 </Navbar.Collapse>
             </Navbar>
@@ -89,7 +89,7 @@ export default function Emppage() {
                                 <Route path="/" element={<ProductviewCard />} />
                                 <Route path="/profile" element={<Profile />} />
                                 <Route path="/viewproductdetail/:prdid" element={<ViewProductDetail/>}></Route>
-                                <Route path="/order/:pid/:sellerid" element={<OrderNow/>}></Route>
+                                <Route path="/order/:pid/:sellerid/:quantity" element={<OrderNow/>}></Route>
                                 <Route path="/myorder" element={<Myorder/>}></Route>
                                 <Route path="/paymentpage" element={<PaymentPage/>}></Route> 
                                 <Route path="/paymentpages" element={ <PaymentPages/>}></Route>

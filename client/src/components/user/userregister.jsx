@@ -16,48 +16,53 @@ function Userregister() {
   const[errors,setErrors]=useState({});
   const [image]=useState({});
   const formdata=new FormData();
-  const findErrors=()=>{
-    const re =/^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
-    const {fullname,email,phone,address,pass,conpass}=record;
-    const newerrors={};
-    if(!fullname||fullname==""){
-      newerrors.fullname="fullname field is required";
-    }
-    else if(fullname.length>30)
-    {
-      newerrors.fullname="content is too long";
-    }
-    if(!email||email==""){
-      newerrors.email="email field is required";
-    }
-    else if(!re.test(email))
-    {
-      newerrors.email="invalid email";
-    }
-    if(!phone||phone==""){
-      newerrors.phone="phone field is required";
-    }
-    else if(phone.length!=10)
-    {
-      newerrors.phone="invalid phone";
-    }
-    if(!address||address==""){
-      newerrors.address="address field is required";
-    }
-    if(!pass||pass==""){
-      newerrors.pass="password field is required";
-    }
-    else if(pass.length<6)
-    {
-      newerrors.pass="password contains atleast 6 charectors";
-    }
-    else if(pass!=conpass)
-    {
-      newerrors.pass="password mismatch ";
-    }
-       
-return newerrors;
-    }
+  const findErrors = () => {
+  const reEmail = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.]*)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+  const rePassword = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/; // At least 6 characters, containing both letters and numbers
+  const reName = /^[A-Za-z\s]+$/; // Only alphabetic characters and spaces
+
+  const { fullname, email, phone, address, pass, conpass } = record;
+  const newErrors = {};
+
+  if (!fullname || fullname === "") {
+    newErrors.fullname = "Full name field is required.";
+  } else if (!reName.test(fullname)) {
+    newErrors.fullname = "Full name should only contain letters and spaces.";
+  } else if (fullname.length > 30) {
+    newErrors.fullname = "Full name is too long (max 30 characters).";
+  }
+
+  if (!email || email === "") {
+    newErrors.email = "Email field is required.";
+  } else if (!reEmail.test(email)) {
+    newErrors.email = "Invalid email format.";
+  }
+
+  if (!phone || phone === "") {
+    newErrors.phone = "Phone field is required.";
+  } else if (phone.length !== 10) {
+    newErrors.phone = "Phone number must be 10 digits.";
+  }
+
+  if (!address || address === "") {
+    newErrors.address = "Address field is required.";
+  }
+
+  if (!pass || pass === "") {
+    newErrors.pass = "Password field is required.";
+  } else if (pass.length < 6) {
+    newErrors.pass = "Password must be at least 6 characters.";
+  } else if (!rePassword.test(pass)) {
+    newErrors.pass = "Password must contain both letters and numbers.";
+  }
+
+  if (pass !== conpass) {
+    newErrors.conpass = "Passwords do not match.";
+  }
+
+  return newErrors;
+};
+
   
   const setValue=(field,value)=>{
       setRecord({...record,[field]:value})
@@ -135,10 +140,18 @@ return newerrors;
                     {errors.phone}
                   </Form.Control.Feedback>
                   <Form.Label>Address :</Form.Label> {/* Updated label capitalization */}
-                  <Form.Control type="address" name="address" placeholder='Enter the Address' onChange={(e)=>{setValue(e.target.name,e.target.value)}} isInvalid={!!errors.address}  />
-                  <Form.Control.Feedback type='invalid'>
-                    {errors.address}
-                  </Form.Control.Feedback>
+<Form.Control 
+  as="textarea" // Change from 'type="address"' to 'as="textarea"'
+  rows={3} // You can adjust the number of rows as needed for the size of the text box
+  name="address" 
+  placeholder="Enter the Address" 
+  onChange={(e) => { setValue(e.target.name, e.target.value); }} 
+  isInvalid={!!errors.address}  
+/>
+<Form.Control.Feedback type="invalid">
+  {errors.address}
+</Form.Control.Feedback>
+
                  
                   <Form.Label>Password :</Form.Label> {/* Updated label capitalization */}
                   <Form.Control type="password" name="pass" placeholder='********' onChange={(e)=>{setValue(e.target.name,e.target.value)}} isInvalid={!!errors.pass} />

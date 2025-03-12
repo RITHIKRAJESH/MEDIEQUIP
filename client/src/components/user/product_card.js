@@ -40,7 +40,7 @@ export default function ProductviewCard() {
         <>
             <Container>
                 {/* Dropdown for categories */}
-                <Row className="mt-3" style={{paddingLeft:"100px"}}>
+                {/* <Row className="mt-3" style={{paddingLeft:"100px"}}>
                     <Dropdown onSelect={handleCategorySelect}>
                         <Dropdown.Toggle variant="success" id="dropdown-basic">
                             Equipment
@@ -54,7 +54,7 @@ export default function ProductviewCard() {
                             <Dropdown.Item eventKey="Oxygen concentrator">oxygen concentrator</Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>
-                </Row>
+                </Row> */}
 
                 {/* Product list */}
                 <Row className="shadow rounded-4 p-3 mt-3 pb-1 border">

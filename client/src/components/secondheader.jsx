@@ -11,7 +11,7 @@ export default function Secondheader() {
         <pre>
         <span className='txt1'>Buy and Sell Used </span>
         <h2 className='txt2'>Medical Equipments Without The Hassle.</h2>
-        <Button className='bt' type='button' href='/sellerregister' style={{fontFamily:"cursive"}}>Sell Equipment</Button>   <Button className='bt' type='button' href='/userregister' style={{fontFamily:"cursive"}}>Buy Equipment</Button>
+        <Button className='bt' type='button' href='/sellerlogin' style={{fontFamily:"cursive"}}>Sell Equipment</Button>   <Button className='bt' type='button' href='/userlogin' style={{fontFamily:"cursive"}}>Buy Equipment</Button>
   
         </pre>
         </Col>

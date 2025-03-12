@@ -17,7 +17,18 @@ export default function Productview1(){
                 setProduct(res.data)
             }
         )
-    })
+        const handlePopState = () => {
+            window.history.pushState(null, null, window.location.href);
+          };
+      
+          window.history.pushState(null, null, window.location.href); // Push a new state into history
+          window.addEventListener("popstate", handlePopState); // Listen to popstate to prevent going back
+      
+          // Cleanup the event listener
+          return () => {
+            window.removeEventListener("popstate", handlePopState);
+          };
+    },[])
 
     const deleteproduct=(userid)=>{
         let ans=window.confirm("Do u want to delete?")
@@ -60,8 +71,11 @@ export default function Productview1(){
                     <th>Product Category</th>
                     <th>Product Image</th>
                     <th>Product Used</th>
+                    <th>Description</th>
                     <th>Price</th>
                     <th>Action</th>
+                   
+                    
                 </tr>
             </thead>
             <tbody>
@@ -91,6 +105,7 @@ export default function Productview1(){
                         <td>
                             {ls.prod_used}
                         </td>
+                        <td>{ls.description}</td>
                         <td>
                             {ls.productprice}
                         </td>
@@ -106,6 +121,7 @@ export default function Productview1(){
                                 <FaUserEdit style={{color:'green', fontSize:'30px'}} />
                                 </a>
                                 </td>
+                                
                     </tr>
                 })
             }
