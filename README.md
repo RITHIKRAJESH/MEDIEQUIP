@@ -20,8 +20,6 @@ It connects hospitals, clinics, and individual sellers with buyers, offering an 
 ## 🛠 Tech Stack
 
 ### Frontend
-- React.js (with Hooks)
-- Redux Toolkit (for state management)
 - Axios (for API requests)
 - React Router
 
